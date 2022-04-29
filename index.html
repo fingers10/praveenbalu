@@ -171,7 +171,7 @@
         </nav>
     </header>
     <main class="flex flex-col space-y-6">
-        <section id="home" class="page-section ove">
+        <!-- <section id="home" class="page-section ove">
             <div id="video-container"
                 class="mx-auto my-8 flex landscape:block h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] max-h-[calc(100vh_-_10rem)]">
                 <div class="plyr__video-embed" id="player" style="max-height: calc(100vh - 10rem); width: 100%;">
@@ -492,7 +492,7 @@
                     </tbody>
                 </table>
             </article>
-        </section>
+        </section> -->
     </main>
     <aside>
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -630,7 +630,7 @@
         var cinematographyLoaded = false;
         var sliderOpen = false;
         window.addEventListener('DOMContentLoaded', (event) => {
-            initialiseHomeShowReel();
+            //initialiseHomeShowReel();
 
             const recordingTimer = document.getElementById('timer');
             const start = new Date();
@@ -642,93 +642,93 @@
 
             const navLinks = document.querySelectorAll('nav a:not(:first-child), nav img');
 
-            navLinks.forEach((link) => {
-                link.addEventListener('click', (e) => {
+            // navLinks.forEach((link) => {
+            //     link.addEventListener('click', (e) => {
 
-                    e.preventDefault();
-                    var hash = e.target.getAttribute('data-target').substring(1);
-                    window.location.hash = hash;
+            //         e.preventDefault();
+            //         var hash = e.target.getAttribute('data-target').substring(1);
+            //         window.location.hash = hash;
 
-                    navLinks.forEach((element) => {
-                        element.classList.remove('text-fuchsia-500');
-                        document.getElementById(element.getAttribute('data-target').substring(1)).classList.add('hidden');
-                    });
-                    link.classList.add('text-fuchsia-500');
-                    document.getElementById(hash).classList.remove('hidden');
+            //         navLinks.forEach((element) => {
+            //             element.classList.remove('text-fuchsia-500');
+            //             document.getElementById(element.getAttribute('data-target').substring(1)).classList.add('hidden');
+            //         });
+            //         link.classList.add('text-fuchsia-500');
+            //         document.getElementById(hash).classList.remove('hidden');
 
-                    var topoffset = document.querySelector('nav a').offsetHeight + document.getElementById('top-camera-icons').offsetHeight;
-                    var element = document.getElementById(hash);
-                    if (element) {
-                        const bodyRect = document.body.getBoundingClientRect().top;
-                        const elementRect = element.getBoundingClientRect().top;
-                        const elementPosition = elementRect - bodyRect;
-                        const offsetPosition = elementPosition - topoffset;
+            //         var topoffset = document.querySelector('nav a').offsetHeight + document.getElementById('top-camera-icons').offsetHeight;
+            //         var element = document.getElementById(hash);
+            //         if (element) {
+            //             const bodyRect = document.body.getBoundingClientRect().top;
+            //             const elementRect = element.getBoundingClientRect().top;
+            //             const elementPosition = elementRect - bodyRect;
+            //             const offsetPosition = elementPosition - topoffset;
 
-                        if (hash === 'photography' && !photographyLoaded) {
-                            loadPhotographyCategory();
-                            filterPhotos();
-                            photographyLoaded = true;
-                        }
+            //             if (hash === 'photography' && !photographyLoaded) {
+            //                 loadPhotographyCategory();
+            //                 filterPhotos();
+            //                 photographyLoaded = true;
+            //             }
 
-                        if (hash === 'cinematography' && !cinematographyLoaded) {
-                            filterVideos();
-                            cinematographyLoaded = true;
-                        }
+            //             if (hash === 'cinematography' && !cinematographyLoaded) {
+            //                 filterVideos();
+            //                 cinematographyLoaded = true;
+            //             }
 
-                        if ((hash === 'photography' || hash === 'cinematography') && sliderOpen) {
-                            document.body.classList.add('overflow-hidden');
-                            document.querySelector('a[href="#photography"]').classList.remove('z-10');
-                        }
+            //             if ((hash === 'photography' || hash === 'cinematography') && sliderOpen) {
+            //                 document.body.classList.add('overflow-hidden');
+            //                 document.querySelector('a[href="#photography"]').classList.remove('z-10');
+            //             }
 
-                        if (hash === 'information' || hash === 'award') {
-                            document.body.classList.remove('overflow-hidden');
-                        }
+            //             if (hash === 'information' || hash === 'award') {
+            //                 document.body.classList.remove('overflow-hidden');
+            //             }
 
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
+            //             window.scrollTo({
+            //                 top: offsetPosition,
+            //                 behavior: 'smooth'
+            //             });
 
-                        if (player.playing) {
-                            player.pause();
-                        }
+            //             if (player.playing) {
+            //                 player.pause();
+            //             }
 
-                        if (cinematographySplide) {
-                            cinematographySplide.Components.Video.pause();
-                        }
-                    }
-                })
-            });
+            //             if (cinematographySplide) {
+            //                 cinematographySplide.Components.Video.pause();
+            //             }
+            //         }
+            //     })
+            // });
 
-            document.querySelector('#photography-carousel-close').addEventListener('click', () => {
-                document.body.classList.remove('overflow-hidden');
-                document.getElementById('photography-carousel').classList.add('hidden');
-                document.querySelector('a[href="#photography"]').classList.add('z-10');
-                photographySplide.destroy('completely');
-                sliderOpen = false || !document.getElementById('cinematography-carousel').classList.contains('hidden');
-            });
+            // document.querySelector('#photography-carousel-close').addEventListener('click', () => {
+            //     document.body.classList.remove('overflow-hidden');
+            //     document.getElementById('photography-carousel').classList.add('hidden');
+            //     document.querySelector('a[href="#photography"]').classList.add('z-10');
+            //     photographySplide.destroy('completely');
+            //     sliderOpen = false || !document.getElementById('cinematography-carousel').classList.contains('hidden');
+            // });
 
-            document.querySelector('#photography-category').addEventListener('change', (e) => {
-                filterPhotos();
-            });
+            // document.querySelector('#photography-category').addEventListener('change', (e) => {
+            //     filterPhotos();
+            // });
 
-            document.querySelector('#cinematography-carousel-close').addEventListener('click', () => {
-                document.body.classList.remove('overflow-hidden');
-                document.getElementById('cinematography-carousel').classList.add('hidden');
-                document.querySelector('a[href="#photography"]').classList.add('z-10');
-                cinematographySplide.destroy('completely');
-                sliderOpen = false || !document.getElementById('photography-carousel').classList.contains('hidden');
-            });
+            // document.querySelector('#cinematography-carousel-close').addEventListener('click', () => {
+            //     document.body.classList.remove('overflow-hidden');
+            //     document.getElementById('cinematography-carousel').classList.add('hidden');
+            //     document.querySelector('a[href="#photography"]').classList.add('z-10');
+            //     cinematographySplide.destroy('completely');
+            //     sliderOpen = false || !document.getElementById('photography-carousel').classList.contains('hidden');
+            // });
 
-            window.addEventListener("orientationchange", function () {
-                changeAwardsDisplayFormat();
-            }, false);
+            // window.addEventListener("orientationchange", function () {
+            //     changeAwardsDisplayFormat();
+            // }, false);
 
-            window.onhashchange = function () {
-                navigateOnLoad();
-            };
+            // window.onhashchange = function () {
+            //     navigateOnLoad();
+            // };
 
-            fetchData();
+            // fetchData();
         });
 
         function navigateOnLoad() {
