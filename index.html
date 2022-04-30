@@ -647,10 +647,15 @@
 
                     e.preventDefault();
 
-                    document.querySelector('.icon-tabler-plus').classList.remove('hidden');
-
                     var hash = e.target.getAttribute('data-target').substring(1);
                     window.location.hash = hash;
+
+                    if (hash === 'home') {
+                        document.querySelector('.icon-tabler-plus').classList.add('hidden');
+                    }
+                    else {
+                        document.querySelector('.icon-tabler-plus').classList.remove('hidden');
+                    }
 
                     navLinks.forEach((element) => {
                         element.classList.remove('text-fuchsia-500');
@@ -759,7 +764,10 @@
             });
 
             player.on('ready', (event) => {
-                document.querySelector('.icon-tabler-plus').classList.add('hidden');
+                var targetHash = window.location.hash;
+                if (targetHash === '' || targetHash === '#home') {
+                    document.querySelector('.icon-tabler-plus').classList.add('hidden');
+                }
             });
 
             player.on('playing', (event) => {
@@ -852,7 +860,7 @@
                 lazyLoad: 'nearby',
                 pagination: false,
                 keyboard: 'global',
-                start: currentVideoIndex,
+                start: currentVideoIndex
             }).mount(window.splide.Extensions);
             Array.from(document.getElementsByClassName('splide__video__play')).forEach(elm => {
                 elm.innerHTML = `<div class="bg-black/80">
