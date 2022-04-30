@@ -171,7 +171,7 @@
         </nav>
     </header>
     <main class="flex flex-col space-y-6">
-        <section id="home" class="page-section ove">
+        <section id="home" class="page-section">
             <div id="video-container"
                 class="mx-auto my-8 flex landscape:block h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] max-h-[calc(100vh_-_10rem)]">
                 <div class="plyr__video-embed" id="player" style="max-height: calc(100vh - 10rem); width: 100%;">
@@ -524,7 +524,7 @@
             <path d="M19 5v6a8 8 0 0 1 -8 8h-6"></path>
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-plus text-blue-300 opacity-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            class="icon icon-tabler icon-tabler-plus text-blue-300 opacity-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
             width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
             stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -646,6 +646,9 @@
                 link.addEventListener('click', (e) => {
 
                     e.preventDefault();
+
+                    document.querySelector('.icon-tabler-plus').classList.remove('hidden');
+
                     var hash = e.target.getAttribute('data-target').substring(1);
                     window.location.hash = hash;
 
@@ -753,6 +756,18 @@
                     modestbranding: 1,
                     autoplay: 0
                 }
+            });
+
+            player.on('ready', (event) => {
+                document.querySelector('.icon-tabler-plus').classList.add('hidden');
+            });
+
+            player.on('playing', (event) => {
+                document.querySelector('.icon-tabler-plus').classList.remove('hidden');
+            });
+
+            player.on('pause', (event) => {
+                document.querySelector('.icon-tabler-plus').classList.add('hidden');
             });
         }
 
