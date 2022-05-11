@@ -629,7 +629,7 @@
         var photographyLoaded = false;
         var cinematographyLoaded = false;
         var sliderOpen = false;
-        window.addEventListener('DOMContentLoaded', (event) => {
+        window.addEventListener('DOMContentLoaded', async (event) => {
             initialiseHomeShowReel();
 
             const recordingTimer = document.getElementById('timer');
@@ -736,7 +736,7 @@
                 navigateOnLoad();
             };
 
-            fetchData();
+            await fetchData();
         });
 
         function navigateOnLoad() {
@@ -930,6 +930,7 @@
                 'text-rose-500 md:text-white hover:text-rose-500'
             ]
             let awardContent = document.querySelector('#award table tbody');
+            awardContent.innerHTML = '';
             awardData.forEach(function (feed, index) {
                 let row = document.createElement('tr');
                 row.className = `${colors[Math.floor(Math.random() * colors.length)]} flex flex-col items-center justify-center`;
@@ -964,17 +965,113 @@
             });
         }
 
-        function fetchData() {
-            fetch('./data.json')
-                .then(response => response.json())
-                .then(data => {
-                    photographyData = data.photography;
-                    cinematographyData = data.cinematography;
-                    awardData = data.award;
-                    navigateOnLoad();
-                    loadAward();
-                    changeAwardsDisplayFormat();
-                });
+        const groupBy = (arr, key) => {
+            const initialValue = {};
+            return arr.reduce((acc, cval) => {
+                const myAttribute = cval[key];
+                acc[myAttribute] = [...(acc[myAttribute] || []), cval]
+                return acc;
+            }, initialValue);
+        };
+
+        async function fetchData() {
+            // fetch('./data.json')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         photographyData = data.photography;
+            //         cinematographyData = data.cinematography;
+            //         awardData = data.award;
+            //         navigateOnLoad();
+            //         loadAward();
+            //         changeAwardsDisplayFormat();
+            //     });
+
+            try {
+                await Promise.all([
+                    fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Photography')
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(function (photo) {
+                                photo.url = photo.url.replace(photo.url, `https://lh3.googleusercontent.com/d/${photo.url.slice(32, photo.url.length - 17)}`);
+                            })
+                            photographyData = groupBy(data, "category");;
+                        }),
+                    fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Cinematography')
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(function (video) {
+                                video.posterUrl = video.posterUrl.replace(video.posterUrl, `https://lh3.googleusercontent.com/d/${video.url.slice(32, video.url.length - 17)}`);
+                            })
+                            cinematographyData = data;
+                        }),
+                    fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Award')
+                        .then(response => response.json())
+                        .then(data => {
+                            awardData = data;
+                            loadAward();
+                            changeAwardsDisplayFormat();
+                        })
+                ]);
+            }
+            catch (error) {
+                console.warn('error loading data from opensheet', error);
+
+                await fetch('./data.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        photographyData = data.photography;
+                        cinematographyData = data.cinematography;
+                        awardData = data.award;
+                        loadAward();
+                        changeAwardsDisplayFormat();
+                    });
+
+                console.log('loaded from backup');
+            }
+            finally {
+                navigateOnLoad();
+            }
+
+            // await Promise.all([
+            //     fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Photography')
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             photographyData = groupBy(data, "category");;
+            //         }),
+            //     fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Cinematography')
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             cinematographyData = data;
+            //         }),
+            //     fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Award')
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             awardData = data;
+            //             loadAward();
+            //             changeAwardsDisplayFormat();
+            //         })
+            // ])
+            //     .then(_ => navigateOnLoad());
+
+            // await fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Photography')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         photographyData = groupBy(data, "category");;
+            //     });
+
+            // await fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Cinematography')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         cinematographyData = data;
+            //     });
+
+            // await fetch('https://opensheet.elk.sh/1cTnPAlpFzZijmpdodL72BGGzuTe9SANS1zyDnnyeVuM/Award')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         awardData = data;
+            //         loadAward();
+            //         changeAwardsDisplayFormat();
+            //     });
         }
     </script>
 </body>
