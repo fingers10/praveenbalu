@@ -1046,10 +1046,12 @@
   .writing-mode-tb {
     writing-mode: tb;
   }
-  .writing-mode-v-lr {
+}
+@media (orientation: portrait) {
+  .portrait\:writing-mode-v-lr {
     writing-mode: vertical-lr;
   }
-  .text-orientation-upright {
+  .portrait\:text-orientation-upright {
     text-orientation: upright;
   }
 }

@@ -4,12 +4,15 @@
     .writing-mode-tb {
         writing-mode: tb;
     }
+}
 
-    .writing-mode-v-lr {
+/* Portrait-specific variants - outside @layer for proper specificity */
+@media (orientation: portrait) {
+    .portrait\:writing-mode-v-lr {
         writing-mode: vertical-lr;
     }
 
-    .text-orientation-upright {
+    .portrait\:text-orientation-upright {
         text-orientation: upright;
     }
 }
