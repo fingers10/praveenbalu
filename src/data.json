@@ -353,6 +353,11 @@
     },
     "cinematography": [
         {
+            "videoUrl": "https://www.youtube.com/watch?v=s3wnvH5n9Gw",
+            "posterUrl": "https://lh3.googleusercontent.com/d/14sAYsw8uEGVNxS2wSFP7cjUs31vXk9sf",
+            "orientation": "portrait"
+        },
+        {
             "videoUrl": "https://www.youtube.com/watch?v=c6Y8-oJRwiU&feature=youtu.be",
             "posterUrl": "https://lh3.googleusercontent.com/d/1LJ1oKoBSk2ByKxbnLxUzxGCkKzp9aT3W",
             "orientation": "portrait"
@@ -360,6 +365,16 @@
         {
             "videoUrl": "https://www.youtube.com/watch?v=2HWYkxcW3hM",
             "posterUrl": "https://lh3.googleusercontent.com/d/1k5Mf7C-Ste-oNzCGU-YYgDB6xWV9ZTg2",
+            "orientation": "portrait"
+        },
+        {
+            "videoUrl": "https://www.youtube.com/watch?v=YEGAnwt8YMc",
+            "posterUrl": "https://lh3.googleusercontent.com/d/1TBA3Zxd56H-13KXwA-v3Za4OgUrZ3mPT",
+            "orientation": "portrait"
+        },
+        {
+            "videoUrl": "https://www.youtube.com/watch?v=skwufg66r_Y",
+            "posterUrl": "https://lh3.googleusercontent.com/d/1tbea_-6IKn8yOwbt7WYZNNxfTuPfDQ66",
             "orientation": "portrait"
         },
         {
