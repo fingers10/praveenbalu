@@ -758,11 +758,11 @@
             while (splideContent.firstChild) {
                 splideContent.removeChild(splideContent.lastChild);
             }
-            
+
             homeData.forEach(function (item, index) {
                 let splideLi = document.createElement('li');
                 splideLi.className = 'splide__slide flex items-center justify-center h-full';
-                
+
                 // Check item type from data.json
                 if (item.type === 'video') {
                     // Create video container with Plyr for clean, transparent overlay
@@ -770,7 +770,7 @@
                     videoContainer.className = 'plyr__video-embed w-full h-full';
                     videoContainer.style.width = '100%';
                     videoContainer.style.height = '100%';
-                    
+
                     let iframe = document.createElement('iframe');
                     iframe.src = item.url;
                     iframe.style.width = '100%';
@@ -779,10 +779,10 @@
                     iframe.setAttribute('allowtransparency', '');
                     iframe.setAttribute('allow', 'autoplay');
                     iframe.setAttribute('frameborder', '0');
-                    
+
                     videoContainer.appendChild(iframe);
                     splideLi.appendChild(videoContainer);
-                    
+
                     // Initialize Plyr for this video after DOM insertion
                     var player = new Plyr(videoContainer, {
                         controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'fullscreen'],
@@ -819,10 +819,10 @@
                     splideImg.setAttribute('data-splide-lazy', item.url);
                     splideLi.appendChild(splideImg);
                 }
-                
+
                 splideContent.appendChild(splideLi);
             });
-            
+
             // Initialize auto-playing carousel
             initiateHomeCarousel();
         }
@@ -831,7 +831,7 @@
             if (homeSplide) {
                 homeSplide.destroy();
             }
-            
+
             homeSplide = new Splide('#home-splide', {
                 type: 'loop',
                 autoplay: true,
