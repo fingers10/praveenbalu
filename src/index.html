@@ -172,11 +172,12 @@
     </header>
     <main class="flex flex-col space-y-6">
         <section id="home" class="page-section">
-            <div id="video-container"
-                class="mx-auto my-8 flex landscape:block h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] max-h-[calc(100vh_-_10rem)]">
-                <div class="plyr__video-embed" id="player" style="max-height: calc(100vh - 10rem); width: 100%;">
-                    <iframe src="https://www.youtube.com/embed/0KqSMmgRc0A" allowfullscreen allowtransparency
-                        allow="autoplay"></iframe>
+            <div id="home-carousel"
+                class="mx-auto my-8 h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] max-h-[calc(100vh_-_10rem)]">
+                <div id="home-splide" class="splide h-full">
+                    <div class="splide__track h-full">
+                        <ul class="splide__list h-full"></ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -625,20 +626,19 @@
     <script
         src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-video@0.8.0/dist/js/splide-extension-video.min.js"></script>
     <script type="text/javascript">
-        var player;
+        var homeData;
         var photographyData;
         var cinematographyData;
         var awardData;
         var currentPhotoIndex = 0;
         var currentVideoIndex = 0;
+        var homeSplide;
         var photographySplide;
         var cinematographySplide;
         var photographyLoaded = false;
         var cinematographyLoaded = false;
         var sliderOpen = false;
         window.addEventListener('DOMContentLoaded', (event) => {
-            initialiseHomeShowReel();
-
             const recordingTimer = document.getElementById('timer');
             const start = new Date();
             setInterval(() => {
@@ -704,10 +704,6 @@
                             behavior: 'smooth'
                         });
 
-                        if (player.playing) {
-                            player.pause();
-                        }
-
                         if (cinematographySplide) {
                             cinematographySplide.Components.Video.pause();
                         }
@@ -720,7 +716,7 @@
                 document.getElementById('photography-carousel').classList.add('hidden');
                 document.querySelector('a[href="#photography"]').classList.add('z-10');
                 photographySplide.destroy('completely');
-                sliderOpen = false || !document.getElementById('cinematography-carousel').classList.contains('hidden');
+                sliderOpen = !document.getElementById('cinematography-carousel').classList.contains('hidden');
             });
 
             document.querySelector('#photography-category').addEventListener('change', (e) => {
@@ -732,7 +728,7 @@
                 document.getElementById('cinematography-carousel').classList.add('hidden');
                 document.querySelector('a[href="#photography"]').classList.add('z-10');
                 cinematographySplide.destroy('completely');
-                sliderOpen = false || !document.getElementById('photography-carousel').classList.contains('hidden');
+                sliderOpen = !document.getElementById('photography-carousel').classList.contains('hidden');
             });
 
             window.addEventListener("orientationchange", function () {
@@ -757,33 +753,98 @@
             }
         }
 
-        function initialiseHomeShowReel() {
-            player = new Plyr('#player', {
+        function loadHomeCarousel() {
+            let splideContent = document.querySelector('#home-carousel .splide__list');
+            while (splideContent.firstChild) {
+                splideContent.removeChild(splideContent.lastChild);
+            }
+            
+            homeData.forEach(function (item, index) {
+                let splideLi = document.createElement('li');
+                splideLi.className = 'splide__slide flex items-center justify-center h-full';
+                
+                // Check item type from data.json
+                if (item.type === 'video') {
+                    // Create video container with Plyr for clean, transparent overlay
+                    let videoContainer = document.createElement('div');
+                    videoContainer.className = 'plyr__video-embed w-full h-full';
+                    videoContainer.style.width = '100%';
+                    videoContainer.style.height = '100%';
+                    
+                    let iframe = document.createElement('iframe');
+                    iframe.src = item.url;
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.setAttribute('allowfullscreen', '');
+                    iframe.setAttribute('allowtransparency', '');
+                    iframe.setAttribute('allow', 'autoplay');
+                    iframe.setAttribute('frameborder', '0');
+                    
+                    videoContainer.appendChild(iframe);
+                    splideLi.appendChild(videoContainer);
+                    
+                    // Initialize Plyr for this video after DOM insertion
+                    var player = new Plyr(videoContainer, {
+                        controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'fullscreen'],
+                        youtube: { noCookie: false, rel: 0, showinfo: 0, iv_load_policy: 3, modestbranding: 1 }
+                    });
+
+                    player.on('ready', (event) => {
+                        var targetHash = window.location.hash;
+                        if (targetHash === '' || targetHash === '#home') {
+                            document.querySelector('.icon-tabler-plus').classList.add('hidden');
+                        }
+                    });
+
+                    player.on('playing', (event) => {
+                        document.querySelector('.icon-tabler-plus').classList.remove('hidden');
+                        homeSplide.destroy();
+                    });
+
+                    player.on('pause', (event) => {
+                        document.querySelector('.icon-tabler-plus').classList.add('hidden');
+                        initiateHomeCarousel();
+                    });
+
+                    player.on('ended', (event) => {
+                        document.querySelector('.icon-tabler-plus').classList.add('hidden');
+                        initiateHomeCarousel();
+                    });
+                } else if (item.type === 'image') {
+                    // Create image element
+                    let splideImg = document.createElement('img');
+                    splideImg.src = item.url;
+                    splideImg.alt = `Home image ${index + 1}`;
+                    splideImg.className = item.orientation === 'portrait' ? 'sm:landscape:w-1/2 md:w-2/6 md:landscape:1/4 lg:w-1/2 lg:landscape:w-1/2' : 'lg:landscape:h-[calc(100vh_-_10rem)] lg:landscape:min-h-[calc(100vh_-_10rem)] lg:landscape:max-h-[calc(100vh_-_10rem)]';
+                    splideImg.setAttribute('data-splide-lazy', item.url);
+                    splideLi.appendChild(splideImg);
+                }
+                
+                splideContent.appendChild(splideLi);
+            });
+            
+            // Initialize auto-playing carousel
+            initiateHomeCarousel();
+        }
+
+        function initiateHomeCarousel() {
+            if (homeSplide) {
+                homeSplide.destroy();
+            }
+            
+            homeSplide = new Splide('#home-splide', {
+                type: 'loop',
                 autoplay: true,
-                youtube: {
-                    noCookie: false,
-                    rel: 0,
-                    showinfo: 0,
-                    iv_load_policy: 3,
-                    modestbranding: 1,
-                    autoplay: 0
-                }
-            });
-
-            player.on('ready', (event) => {
-                var targetHash = window.location.hash;
-                if (targetHash === '' || targetHash === '#home') {
-                    document.querySelector('.icon-tabler-plus').classList.add('hidden');
-                }
-            });
-
-            player.on('playing', (event) => {
-                document.querySelector('.icon-tabler-plus').classList.remove('hidden');
-            });
-
-            player.on('pause', (event) => {
-                document.querySelector('.icon-tabler-plus').classList.add('hidden');
-            });
+                interval: 4000,
+                pauseOnHover: true,
+                pauseOnFocus: true,
+                speed: 1000,
+                lazyLoad: 'nearby',
+                pagination: false,
+                arrows: false,
+                keyboard: 'global',
+                height: 'calc(100vh - 10rem)'
+            }).mount();
         }
 
         function initiatePhotographyCarousel() {
@@ -975,9 +1036,11 @@
             fetch('./data.json')
                 .then(response => response.json())
                 .then(data => {
+                    homeData = data.home;
                     photographyData = data.photography;
                     cinematographyData = data.cinematography;
                     awardData = data.award;
+                    loadHomeCarousel();
                     navigateOnLoad();
                     loadAward();
                     changeAwardsDisplayFormat();
