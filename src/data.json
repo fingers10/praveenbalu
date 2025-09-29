@@ -1,4 +1,41 @@
 {
+    "home": [
+        {
+            "url": "https://www.youtube.com/embed/0KqSMmgRc0A",
+            "orientation": "landscape",
+            "type": "video"
+        },
+        {
+            "url": "https://lh3.googleusercontent.com/d/1-AwVTm3zVhI4GTiEot8scC6VbNx2SceI",
+            "orientation": "landscape",
+            "type": "image"
+        },
+        {
+            "url": "https://lh3.googleusercontent.com/d/1HiTsa3pJssT7e-HJhOT7H4riI3d9Af-4",
+            "orientation": "landscape",
+            "type": "image"
+        },
+        {
+            "url": "https://lh3.googleusercontent.com/d/1vRoNZY9hWFDtccWxLSZVRPzbkKOqrbgU",
+            "orientation": "landscape",
+            "type": "image"
+        },
+        {
+            "url": "https://lh3.googleusercontent.com/d/1vd2IKOL0osOOOMfUNOxQhO0wwsT_r3Y-",
+            "orientation": "landscape",
+            "type": "image"
+        },
+        {
+            "url": "https://lh3.googleusercontent.com/d/1RcgRJssOG3qn_OHTHSiZzgJOCTXFwLB8",
+            "orientation": "landscape",
+            "type": "image"
+        },
+        {
+            "url": "https://lh3.googleusercontent.com/d/1LZDDq0B-pY82uEoN6pxbk1gh1jtlW77e",
+            "orientation": "landscape",
+            "type": "image"
+        }
+    ],
     "photography": {
         "travel": [
             {
