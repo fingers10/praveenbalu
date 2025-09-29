@@ -15,28 +15,25 @@ jobs:
       # Checkout the code
       - uses: actions/checkout@v5
       
-      # Commented below steps as I reverted to using tailwind V3.
-      # Revert the revert commit c8db43ed7b3537354dea2c89b6b0cde4a1a7d334 - Revert "Update Tailwind CSS configuration and style imports" before enabling this step
-      
       # Setup Node.js
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v5
-      #   with:
-      #     node-version: '24'
-      #     cache: 'npm'
-      #     cache-dependency-path: src/package-lock.json
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: src/package-lock.json
       
       # Install dependencies
-      # - name: Install dependencies
-      #   run: |
-      #     cd src
-      #     npm install
+      - name: Install dependencies
+        run: |
+          cd src
+          npm install
       
       # Build Tailwind CSS (minified)
-      # - name: Build CSS
-      #   run: |
-      #     cd src
-      #     npm run build
+      - name: Build CSS
+        run: |
+          cd src
+          npm run build
       
       # Copy files to dist folder
       - name: Copy files to dist folder
